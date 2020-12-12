@@ -5,23 +5,16 @@
 <hibernate-configuration>
     <session-factory>
 
-        <property name="connection.url">jdbc:mysql://localhost:3306/sklep?serverTimezone=CET</property>
-        <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">root</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/currency_exchange?serverTimezone=CET</property>
+        <property name="hibernate.connection.username">userProject</property>
+        <property name="hibernate.connection.password">user</property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
-        <property name="hbm2ddl.auto">update</property>
+        <property name="hbm2ddl.auto">create</property>
 
-        <mapping class="com.sda.model.Country"/>
-        <mapping class="com.sda.model.Address"/>
-        <mapping class="com.sda.model.User"/>
-        <mapping class="com.sda.model.Order"/>
-        <mapping class="com.sda.model.Category"/>
-        <mapping class="com.sda.model.Product"/>
-        <mapping class="com.sda.model.Customer"/>
-        <mapping class="com.sda.model.Employee"/>
+        <mapping class="pl.model.Currency"/>
 
     </session-factory>
 </hibernate-configuration>
