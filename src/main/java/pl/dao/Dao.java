@@ -2,7 +2,7 @@ package pl.dao;
 
 import org.hibernate.Session;
 import pl.model.Currency;
-import pl.util.HibernateUtil;
+import pl.model.util.HibernateUtil;
 
 public class Dao {
     private Session session;

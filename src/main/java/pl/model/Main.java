@@ -1,9 +1,8 @@
-package pl.app;
+package pl.model;
 
 import org.hibernate.Session;
 import pl.dao.Dao;
-import pl.model.Currency;
-import pl.util.HibernateUtil;
+import pl.model.util.HibernateUtil;
 
 public class Main {
 
