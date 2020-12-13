@@ -1,19 +1,20 @@
 package pl.mapper;
 
-import com.google.gson.internal.LinkedTreeMap;
 import pl.gson.CurrencyDto;
 import pl.model.Currency;
 
+import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.Date;
 
 public class CurrencyMapper {
 
     public static Currency currencyDtoToCurrency(CurrencyDto CDto){
         Currency currency = new Currency();
-        currency.setOrderDate(CDto.getDate());
+        currency.setOrderDate(LocalDate.parse(CDto.getDate()));
         currency.setBaseCurrency(CDto.getBase());
-        currency.setValue(CDto.getAmount());
+        currency.setValue(CDto.getValue());
+        currency.setCurrency(CDto.getCurrency());
+        currency.setRates(CDto.getRates());
         return currency;
     }
 }

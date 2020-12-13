@@ -2,20 +2,34 @@ package pl.gson;
 
 import com.google.gson.internal.LinkedTreeMap;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 public class CurrencyDto {
     private String base;
-    private String amount;
+    private String value;
+    private String currency;
+    private String date;
     private LinkedTreeMap<String, Double> rates;
-    private LocalDate date;
 
-    public LocalDate getDate() {
+    public LinkedTreeMap<String, Double> getRates() {
+        return rates;
+    }
+
+    public void setRates(LinkedTreeMap<String, Double> rates) {
+        this.rates = rates;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -27,29 +41,22 @@ public class CurrencyDto {
         this.base = base;
     }
 
-    public String getAmount() {
-        return amount;
+    public String getValue() {
+        return value;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public LinkedTreeMap<String, Double> getRates() {
-        return rates;
-    }
-
-    public void setRates(LinkedTreeMap<String, Double> rates) {
-        this.rates = rates;
+    public void setValue(String value) {
+        this.value = value;
     }
 
     @Override
     public String toString() {
         return "CurrencyDto{" +
                 "base='" + base + '\'' +
-                ", amount=" + amount +
+                ", value='" + value + '\'' +
+                ", currency='" + currency + '\'' +
+                ", date='" + date + '\'' +
                 ", rates=" + rates +
-                ", date=" + date +
                 '}';
     }
 }
