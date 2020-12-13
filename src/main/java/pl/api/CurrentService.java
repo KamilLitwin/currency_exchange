@@ -37,8 +37,17 @@ public class CurrentService {
     }
 
     public CurrencyDto parseDto() throws CustomException {
-
         String uri = "https://api.exchangeratesapi.io/latest";
+        String json = get(uri);
+
+        Gson gson = new Gson();
+        CurrencyDto currency = gson.fromJson(json, CurrencyDto.class);
+        Currency entity = CurrencyMapper.currencyDtoToCurrency(currency);
+        return currency;
+    }
+
+    public CurrencyDto parseDto2(String baseCurrency, String exchangeCurrency) throws CustomException {
+        String uri = "https://api.exchangeratesapi.io/latest?base=" + baseCurrency + "&symbols=" + exchangeCurrency;
         String json = get(uri);
 
         Gson gson = new Gson();

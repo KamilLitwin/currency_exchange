@@ -17,6 +17,7 @@ public class MainCurrencies {
             System.out.println("3) Wyceń dokładny kurs jednej waluty");
             System.out.println("4) Uzyskaj historyczne kursy walut dla danego okresu");
 
+            System.out.println("11) Prasowanie JSON - przykład waluta bazowa, waluta do wymiany");
             System.out.println("12) Prasowanie JSON - przykład");
 
             Scanner scanner = new Scanner(System.in);
@@ -48,10 +49,17 @@ public class MainCurrencies {
                     String dateTo = scanner.next();
                     result = currentService.ratesHistorical(currency1,dateFrom,dateTo);
                     break;
+                case 11:
+                    System.out.println("Napisz walutę bazową");
+                    String baseCurrency2 = scanner.next();
+                    System.out.println("Napisz walutę wymiany");
+                    String exchangeCurrency2 = scanner.next();
+                    CurrencyDto currencyDto2 = currentService.parseDto2(baseCurrency2,exchangeCurrency2);
+                    result = currencyDto2.toString();
+                    break;
                 case 12:
                     CurrencyDto currencyDto = currentService.parseDto();
                     result = currencyDto.toString();
-
                     break;
                 default:
                     result = "Nie rozpoznano wyboru";
