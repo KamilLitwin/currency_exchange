@@ -1,6 +1,10 @@
 package pl.api;
 
+import com.google.gson.Gson;
 import pl.exception.CustomException;
+import pl.gson.CurrencyDto;
+import pl.mapper.CurrencyMapper;
+import pl.model.Currency;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,6 +34,17 @@ public class CurrentService {
     public String ratesHistorical(String currency, String dateFrom, String dateTo) throws CustomException{
         String uri = "https://api.exchangeratesapi.io/history?base=" + currency + "&start_at=" + dateFrom + "&end_at=" + dateTo;
         return get(uri);
+    }
+
+    public CurrencyDto parseDto() throws CustomException {
+
+        String uri = "https://api.exchangeratesapi.io/latest";
+        String json = get(uri);
+
+        Gson gson = new Gson();
+        CurrencyDto currency = gson.fromJson(json, CurrencyDto.class);
+        Currency entity = CurrencyMapper.currencyDtoToCurrency(currency);
+        return currency;
     }
 
     private String get(String uri) throws CustomException {

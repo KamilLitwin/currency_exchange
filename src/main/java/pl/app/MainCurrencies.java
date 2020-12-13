@@ -49,7 +49,7 @@ public class MainCurrencies {
                     result = currentService.ratesHistorical(currency1,dateFrom,dateTo);
                     break;
                 case 12:
-                    CurrencyDto currencyDto = new CurrencyDto();
+                    CurrencyDto currencyDto = currentService.parseDto();
                     result = currencyDto.toString();
 
                     break;
