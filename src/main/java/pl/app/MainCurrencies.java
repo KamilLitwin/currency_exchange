@@ -2,7 +2,7 @@ package pl.app;
 
 import pl.api.CurrentService;
 import pl.exception.CustomException;
-import pl.gson.GsonExample;
+import pl.gson.CurrencyDto;
 
 import java.util.Scanner;
 
@@ -49,8 +49,9 @@ public class MainCurrencies {
                     result = currentService.ratesHistorical(currency1,dateFrom,dateTo);
                     break;
                 case 12:
-                    GsonExample gsonExample = new GsonExample();
-                    result = gsonExample.parse();
+                    CurrencyDto currencyDto = new CurrencyDto();
+                    result = currencyDto.toString();
+
                     break;
                 default:
                     result = "Nie rozpoznano wyboru";
