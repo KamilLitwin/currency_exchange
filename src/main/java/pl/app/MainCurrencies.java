@@ -49,6 +49,14 @@ public class MainCurrencies {
                     String dateTo = scanner.next();
                     result = currentService.ratesHistorical(currency1,dateFrom,dateTo);
                     break;
+                case 10:
+                    System.out.println("Napisz walutę bazową");
+                    String baseCurrency3 = scanner.next();
+                    System.out.println("Napisz walutę wymiany");
+                    String exchangeCurrency3 = scanner.next();
+                    CurrencyDto currencyDto3 = currentService.parseDto3(baseCurrency3,exchangeCurrency3);
+                    result = currencyDto3.toString();
+                    break;
                 case 11:
                     System.out.println("Napisz walutę bazową");
                     String baseCurrency2 = scanner.next();

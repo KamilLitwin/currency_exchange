@@ -1,6 +1,7 @@
 package pl.api;
 
 import com.google.gson.Gson;
+import pl.dao.Dao;
 import pl.exception.CustomException;
 import pl.gson.CurrencyDto;
 import pl.mapper.CurrencyMapper;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 public class CurrentService {
 
@@ -54,6 +56,29 @@ public class CurrentService {
         CurrencyDto currency = gson.fromJson(json, CurrencyDto.class);
         Currency entity = CurrencyMapper.currencyDtoToCurrency(currency);
         return currency;
+    }
+
+
+    public CurrencyDto parseDto3(String baseCurrency, String exchangeCurrency) throws CustomException {
+        CurrencyDto currencyDto;
+        Currency currency = Dao.getByDateAndByFromAndTo(baseCurrency,exchangeCurrency);
+
+        if (currency != null) {
+            currencyDto = CurrencyMapper.mapCurrencyToCurrencyDto(currency);
+        } else {
+            String uri = "https://api.exchangeratesapi.io/latest?base=" + baseCurrency + "&symbols=" + exchangeCurrency;
+            String json = get(uri);
+
+            Gson gson = new Gson();
+            currencyDto = gson.fromJson(json, CurrencyDto.class);
+
+            List<Currency> entities = CurrencyMapper.mapCurrencyDtoToEntity(currencyDto);
+            for (Currency entity : entities) {
+                Dao.create(entity);
+            }
+        }
+
+        return currencyDto;
     }
 
     private String get(String uri) throws CustomException {

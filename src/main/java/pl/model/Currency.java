@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Data
@@ -17,23 +16,22 @@ public class Currency {
     @Column(name = "CUR_ID")
     private int id;
     @Column(name = "CUR_DATE")
-    private LocalDate orderDate;
+    private String orderDate;
     @Column(name = "CUR_BASE_CURRENCY")
     private String baseCurrency;
     @Column(name = "CUR_CURRENCY")
     private String currency;
     @Column(name = "CUR_VALUE")
-    private String value;
+    private Double value;
     @Column(name = "CUR_RATE")
     private LinkedTreeMap<String, Double> rates;
 
-    public Currency(LocalDate orderDate, String baseCurrency, String currency, String value, LinkedTreeMap<String,Double> rate) {
+    public Currency(String orderDate, String baseCurrency, String currency, Double value, LinkedTreeMap<String,Double> rate) {
         this.orderDate = orderDate;
         this.baseCurrency = baseCurrency;
         this.currency = currency;
         this.value = value;
         this.rates = rate;
     }
-
 
 }

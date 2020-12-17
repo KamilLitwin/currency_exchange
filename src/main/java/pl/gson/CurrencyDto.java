@@ -4,7 +4,7 @@ import com.google.gson.internal.LinkedTreeMap;
 
 public class CurrencyDto {
     private String base;
-    private String value;
+    private Double value;
     private String currency;
     private String date;
     private LinkedTreeMap<String, Double> rates;
@@ -41,11 +41,11 @@ public class CurrencyDto {
         this.base = base;
     }
 
-    public String getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
