@@ -90,6 +90,30 @@ public class Dao {
 
             return null;
         }
+
+    public static Currency getByDateAndByFromAndTo2(String dateFrom, String baseCurrency, String exchangeCurrency) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Currency> query = cb.createQuery(Currency.class);
+            Root<Currency> table = query.from(Currency.class);
+
+            Predicate[] predicates = new Predicate[3];
+            predicates[0] = cb.equal(table.get("baseCurrency"), baseCurrency);
+            predicates[1] = cb.equal(table.get("currency"), exchangeCurrency);
+            predicates[2] = cb.equal(table.get("orderDate"), dateFrom);
+
+            query.select(table).where(predicates);
+
+            Currency currency = session.createQuery(query).getSingleResult();
+
+            return currency;
+        } catch (PersistenceException e) {
+            System.err.println("Błąd zapisu encji Currency");
+            e.printStackTrace();
+        }
+
+        return null;
+    }
     public static void create(Currency currency) {
         Transaction transaction = null;
 

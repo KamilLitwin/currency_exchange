@@ -21,7 +21,7 @@ public class CurrencyMapper {
     }
 
 
-    public static List<Currency> mapCurrencyDtoToEntity(CurrencyDto currencyDto) {
+    public static List<Currency> mapCurrencyDtoToEntity(CurrencyDto currencyDto){
 
         List<Currency> result = new ArrayList<>();
         for (String key : currencyDto.getRates().keySet()) {
@@ -43,6 +43,7 @@ public class CurrencyMapper {
         CurrencyDto result = new CurrencyDto();
         result.setBase(currency.getBaseCurrency());
         result.setDate(currency.getOrderDate());
+        result.setCurrency(currency.getCurrency());
 
         LinkedTreeMap<String, Double> rates = new LinkedTreeMap();
         rates.put(currency.getCurrency(), currency.getValue());

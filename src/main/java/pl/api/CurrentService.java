@@ -81,6 +81,27 @@ public class CurrentService {
         return currencyDto;
     }
 
+    public CurrencyDto parseDto4(String dateFrom, String baseCurrency,String exchangeCurrency) throws CustomException{
+        CurrencyDto currencyDto;
+        Currency currency = Dao.getByDateAndByFromAndTo2(dateFrom,baseCurrency,exchangeCurrency);
+
+        if (currency != null) {
+            currencyDto = CurrencyMapper.mapCurrencyToCurrencyDto(currency);
+        } else {
+        String uri = "https://api.exchangeratesapi.io/history?start_at=" + dateFrom + "&end_at=" + dateFrom +"&base=" + baseCurrency + "&symbol=" + exchangeCurrency;
+        String json = get(uri);
+
+            Gson gson = new Gson();
+            currencyDto = gson.fromJson(json, CurrencyDto.class);
+
+            List<Currency> entities = CurrencyMapper.mapCurrencyDtoToEntity(currencyDto);
+            for (Currency entity : entities) {
+                Dao.create(entity);
+            }
+        }
+        return currencyDto;
+    }
+
     private String get(String uri) throws CustomException {
         try {
             URL url = new URL(uri);

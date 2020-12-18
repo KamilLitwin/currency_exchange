@@ -4,6 +4,8 @@ import pl.api.CurrentService;
 import pl.exception.CustomException;
 import pl.gson.CurrencyDto;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class MainCurrencies {
@@ -17,10 +19,14 @@ public class MainCurrencies {
             System.out.println("3) Wyceń dokładny kurs jednej waluty");
             System.out.println("4) Uzyskaj historyczne kursy walut dla danego okresu");
 
+            System.out.println("9) przykład waluta bazowa, waluta do wymiany - baza z datą nieudana ");
+            System.out.println("10) Prasowanie JSON - przykład waluta bazowa, waluta do wymiany - baza");
             System.out.println("11) Prasowanie JSON - przykład waluta bazowa, waluta do wymiany");
             System.out.println("12) Prasowanie JSON - przykład");
 
             Scanner scanner = new Scanner(System.in);
+            Scanner scannerNumber = new Scanner(System.in);
+            Scanner scannerString = new Scanner(System.in);
             int option = scanner.nextInt();
             String result;
 
@@ -48,6 +54,37 @@ public class MainCurrencies {
                     System.out.println("Napisz do kiedy pobieramy datę. Przykład poprawnej daty 2020-11-03");
                     String dateTo = scanner.next();
                     result = currentService.ratesHistorical(currency1,dateFrom,dateTo);
+                    break;
+                case 9:
+
+                    System.out.println("Podaj datę (kliknij enter by wybrać bieżącą datę)");
+                    String date = scannerString.nextLine();
+                    if (date.equals("")) {
+                        date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                    }
+
+                    String from = "";
+                    while (from == "") {
+                        System.out.println("Podaj walutę bazową (PLN, EUR, USD, GBP)");
+                        from = scannerNumber.next();
+
+                        if (!(from.equals("PLN") || from.equals("EUR") || from.equals("USD") || from.equals("GBP"))) {
+                            from = "";
+                        }
+                    }
+
+                    String to = "";
+                    while (to == "") {
+                        System.out.println("Podaj walutę docelową (PLN, EUR, USD, GBP)");
+                        to = scannerNumber.next();
+
+                        if (!(to.equals("PLN") || to.equals("EUR") || to.equals("USD") || to.equals("GBP"))) {
+                            to = "";
+                        }
+                    }
+
+                    CurrencyDto currencyDto4 = currentService.parseDto4(date,from,to);
+                    result = currencyDto4.toString();
                     break;
                 case 10:
                     System.out.println("Napisz walutę bazową");
