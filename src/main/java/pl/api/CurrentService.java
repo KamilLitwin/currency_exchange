@@ -88,7 +88,7 @@ public class CurrentService {
         if (currency != null) {
             currencyDto = CurrencyMapper.mapCurrencyToCurrencyDto(currency);
         } else {
-        String uri = "https://api.exchangeratesapi.io/history?start_at=" + dateFrom + "&end_at=" + dateFrom +"&base=" + baseCurrency + "&symbol=" + exchangeCurrency;
+        String uri = "https://api.exchangeratesapi.io/history?start_at=" + dateFrom + "&end_at=" + dateFrom +"&base=" + baseCurrency + "&symbols=" + exchangeCurrency;
         String json = get(uri);
 
             Gson gson = new Gson();
