@@ -1,7 +1,8 @@
-package pl.javaFx;
+package pl.javaFx.comboBoxes;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import pl.javaFx.Menu;
 
 public class ChangeListenerBase implements ChangeListener<String> {
 

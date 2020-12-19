@@ -17,7 +17,7 @@ public class MainCurrencies {
         try {
 
             System.out.println("Wybierz opcję");
-            System.out.println("1) Zwróć kursy walut domyślnie euro");
+            System.out.println("1) Zwróć kursy walut dla euro");
             System.out.println("2) Wyceń kurs w innej walucie");
             System.out.println("3) Wyceń dokładny kurs jednej waluty");
             System.out.println("4) Uzyskaj historyczne kursy walut dla danego okresu");

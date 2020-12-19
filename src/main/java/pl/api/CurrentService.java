@@ -127,7 +127,8 @@ public class CurrentService {
             }
             in.close();
 
-            if (stringBuilder.toString() == "") {
+            if (stringBuilder.toString().
+                    equals("")) {
                 throw new CustomException("Jakiś inny komunikat obłędzie");
             }
 
@@ -150,7 +151,7 @@ public class CurrentService {
         try {
             PrintWriter writer = new PrintWriter("waluty.txt");
             for (Currency currency : currencies) {
-                writer.printf("CUR_ID = %d | CUR_BASE_CURRENCY = %.2f | CUR_DATE = %s | CUR_VALUE = %s | CUR_RATE = %.2f\n",
+                writer.printf("CUR_ID = %d | CUR_BASE_CURRENCY = %,.2$ | CUR_DATE = %s | CUR_VALUE = %s | CUR_RATE = %,.2$ \n",
                         currency.getId(),
                         currency.getBaseCurrency(),
                         currency.getOrderDate(),
