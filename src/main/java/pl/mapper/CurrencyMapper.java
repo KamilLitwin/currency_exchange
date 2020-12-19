@@ -16,7 +16,7 @@ public class CurrencyMapper {
         currency.setBaseCurrency(CDto.getBase());
         currency.setValue(CDto.getValue());
         currency.setCurrency(CDto.getCurrency());
-        currency.setRates(CDto.getRates());
+        //currency.setRates(CDto.getRates());
         return currency;
     }
 
@@ -30,7 +30,7 @@ public class CurrencyMapper {
             currency.setBaseCurrency(currencyDto.getBase());
             currency.setValue(currencyDto.getRates().get(key));
             currency.setCurrency(key);
-            currency.setRates(currencyDto.getRates());
+            //currency.setRates(currencyDto.getRates());
 
             result.add(currency);
         }

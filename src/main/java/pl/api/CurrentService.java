@@ -154,8 +154,8 @@ public class CurrentService {
                         currency.getId(),
                         currency.getBaseCurrency(),
                         currency.getOrderDate(),
-                        currency.getValue(),
-                        currency.getRates());
+                        currency.getValue());
+                        //currency.getRates());
             }
 
             writer.close();
