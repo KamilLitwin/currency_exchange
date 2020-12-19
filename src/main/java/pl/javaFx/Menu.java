@@ -21,8 +21,17 @@ public class Menu extends Application {
         launch(args);
     }
 
-    String baseCurrency;
-    String exchangeCurrency;
+    private String baseCurrency;
+    private String exchangeCurrency;
+
+    public void setBaseCurrency(String baseCurrency) {
+        this.baseCurrency = baseCurrency;
+    }
+
+    public void setExchangeCurrency(String exchangeCurrency) {
+        this.exchangeCurrency = exchangeCurrency;
+    }
+
     @Override
     public void start(Stage primaryStage) {
 
@@ -42,13 +51,8 @@ public class Menu extends Application {
                 baseCB.setLayoutX(100);
                 baseCB.setLayoutY(250);
                 baseCB.setMaxWidth(100);
-                baseCB.getSelectionModel().selectedItemProperty().addListener(
-                        new ChangeListener<String>(){
-                            public void changed(ObservableValue<? extends String> ov,
-                                                String old_val, String new_val) {
-                                baseCurrency = new_val;
-                            }
-                        });
+                baseCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListenerBase(Menu.this));// odwołujemy się do obiektu nadrzędnego,
+                // przekazujemy instancje menu w którym jesteśmy
 
                 ComboBox<String> exchangeCB = new ComboBox<String>();
                 exchangeCB.getItems().addAll(options);

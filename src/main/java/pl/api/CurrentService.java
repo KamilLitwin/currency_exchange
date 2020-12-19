@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import pl.dao.Dao;
 import pl.exception.CustomException;
 import pl.gson.CurrencyDto;
+import pl.gson.CurrencyHistoryDto;
 import pl.mapper.CurrencyMapper;
 import pl.model.Currency;
 
@@ -81,24 +82,24 @@ public class CurrentService {
         return currencyDto;
     }
 
-    public CurrencyDto parseDto4(String dateFrom, String baseCurrency,String exchangeCurrency) throws CustomException{
-        CurrencyDto currencyDto;
-        Currency currency = Dao.getByDateAndByFromAndTo2(dateFrom,baseCurrency,exchangeCurrency);
+    public CurrencyHistoryDto parseDto4(String dateFrom, String baseCurrency,String exchangeCurrency) throws CustomException{
+        CurrencyHistoryDto currencyDto;
+        //Currency currency = Dao.getByDateAndByFromAndTo2(dateFrom,baseCurrency,exchangeCurrency);
 
-        if (currency != null) {
-            currencyDto = CurrencyMapper.mapCurrencyToCurrencyDto(currency);
-        } else {
+//        if (currency != null) {
+//            currencyDto = CurrencyMapper.mapCurrencyToCurrencyDto(currency);
+//        } else {
         String uri = "https://api.exchangeratesapi.io/history?start_at=" + dateFrom + "&end_at=" + dateFrom +"&base=" + baseCurrency + "&symbols=" + exchangeCurrency;
         String json = get(uri);
 
             Gson gson = new Gson();
-            currencyDto = gson.fromJson(json, CurrencyDto.class);
+            currencyDto = gson.fromJson(json, CurrencyHistoryDto.class);
 
-            List<Currency> entities = CurrencyMapper.mapCurrencyDtoToEntity(currencyDto);
-            for (Currency entity : entities) {
-                Dao.create(entity);
-            }
-        }
+//            List<Currency> entities = CurrencyMapper.mapCurrencyDtoToEntity(currencyDto);
+//            for (Currency entity : entities) {
+//                Dao.create(entity);
+//            }
+//        }
         return currencyDto;
     }
 
