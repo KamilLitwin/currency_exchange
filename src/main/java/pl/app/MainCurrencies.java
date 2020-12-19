@@ -1,9 +1,12 @@
 package pl.app;
 
+import com.itextpdf.text.DocumentException;
 import pl.api.CurrentService;
 import pl.exception.CustomException;
 import pl.gson.CurrencyDto;
+import pl.gson.CurrencyHistoryDto;
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -18,6 +21,7 @@ public class MainCurrencies {
             System.out.println("2) Wyceń kurs w innej walucie");
             System.out.println("3) Wyceń dokładny kurs jednej waluty");
             System.out.println("4) Uzyskaj historyczne kursy walut dla danego okresu");
+            System.out.println("5) Zapisz waluty do pliku");
 
             System.out.println("9) przykład waluta bazowa, waluta do wymiany - baza z datą nieudana ");
             System.out.println("10) Prasowanie JSON - przykład waluta bazowa, waluta do wymiany - baza");
@@ -55,8 +59,23 @@ public class MainCurrencies {
                     String dateTo = scanner.next();
                     result = currentService.ratesHistorical(currency1,dateFrom,dateTo);
                     break;
-                case 9:
+                case 5:
+                    currentService.exportCurrencyToTextFile();
+                    currentService.exportCurrencyToCsvFile();
+                    String excelPath = currentService.exportCurrencyToExcelFile();
 
+                    System.out.println(excelPath);
+
+                    try {
+                        currentService.exportCurrencyToPdf();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                    }
+                    result = "eksport zakończony";
+                    break;
+                case 9:
                     System.out.println("Podaj datę (kliknij enter by wybrać bieżącą datę)");
                     String date = scannerString.nextLine();
                     if (date.equals("")) {
@@ -83,7 +102,7 @@ public class MainCurrencies {
                         }
                     }
 
-                    CurrencyDto currencyDto4 = currentService.parseDto4(date,from,to);
+                    CurrencyHistoryDto currencyDto4 = currentService.parseDto4(date,from,to);
                     result = currencyDto4.toString();
                     break;
                 case 10:

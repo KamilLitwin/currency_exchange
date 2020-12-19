@@ -1,6 +1,17 @@
 package pl.api;
 
 import com.google.gson.Gson;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.dao.Dao;
 import pl.exception.CustomException;
 import pl.gson.CurrencyDto;
@@ -8,9 +19,7 @@ import pl.gson.CurrencyHistoryDto;
 import pl.mapper.CurrencyMapper;
 import pl.model.Currency;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -132,5 +141,128 @@ public class CurrentService {
         }
 
         return null;
+    }
+
+    public void exportCurrencyToTextFile() {
+
+        List<Currency> currencies = Dao.getAll();
+
+        try {
+            PrintWriter writer = new PrintWriter("waluty.txt");
+            for (Currency currency : currencies) {
+                writer.printf("CUR_ID = %d | CUR_BASE_CURRENCY = %.2f | CUR_DATE = %s | CUR_VALUE = %s | CUR_RATE = %.2f\n",
+                        currency.getId(),
+                        currency.getBaseCurrency(),
+                        currency.getOrderDate(),
+                        currency.getValue(),
+                        currency.getRates());
+            }
+
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportCurrencyToCsvFile() {
+
+        List<Currency> currencies = Dao.getAll();
+
+        try {
+            PrintWriter writer = new PrintWriter("waluty.csv");
+            writer.println("CUR_ID;CUR_BASE_CURRENCY;CUR_DATE;CUR_VALUE");
+            for (Currency currency : currencies) {
+                writer.printf("%d;%.2f;%s;%s;%s;%.2f\n",
+                        currency.getId(),
+                        currency.getBaseCurrency(),
+                        currency.getOrderDate(),
+                        currency.getValue());
+            }
+
+            writer.close();
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String exportCurrencyToExcelFile() {
+        List<Currency> currencies = Dao.getAll();
+
+        Workbook workbook = new XSSFWorkbook(); // obiekt reprezentujący plik xlsx
+
+        Sheet sheet = workbook.createSheet("Kursy walut"); // arkusz w excelu
+
+        String[] columns = "CUR_ID;CUR_BASE_CURRENCY;CUR_DATE;CUR_VALUE".split(";");
+
+        // stworzenie nagłówka (wiersz o indeksie 0)
+        Row headerRow = sheet.createRow(0);
+        for (int i = 0; i < columns.length; i++) {
+            Cell cell = headerRow.createCell(i);
+            cell.setCellValue(columns[i]);
+        }
+
+        // wypełniamny arkusz danymi
+        int dataRowIndex = 1;
+        for (Currency currency : currencies) {
+            Row dataRow = sheet.createRow(dataRowIndex++);
+
+            int dataColumnIndex = 0;
+            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getId());
+            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getOrderDate());
+            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getValue());
+            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getBaseCurrency());
+        }
+
+        // zapisujemy excel do pliku
+        FileOutputStream fileOutputStream = null;
+        try {
+
+            File myFile = new File("waluty.xlsx");
+
+            fileOutputStream = new FileOutputStream(myFile);
+            workbook.write(fileOutputStream);
+
+            fileOutputStream.close();
+            workbook.close();
+
+            return myFile.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public void exportCurrencyToPdf() throws FileNotFoundException, DocumentException {
+
+        List<Currency> currencies = Dao.getAll();
+
+        Document iText_xls_2_pdf = new Document();
+        PdfWriter.getInstance(iText_xls_2_pdf, new FileOutputStream("waluty.pdf"));
+        iText_xls_2_pdf.open();
+        //we have two columns in the Excel sheet, so we create a PDF table with two columns
+        //Note: There are ways to make this dynamic in nature, if you want to.
+
+        String[] columns = "id;amount;base;date;rateName;rateValue".split(";");
+
+        PdfPTable my_table = new PdfPTable(columns.length);
+        for (String str : columns) {
+            my_table.addCell(new PdfPCell(new Phrase(str)));
+        }
+
+        //Loop through rows.
+        for (Currency currency : currencies) {
+            my_table.addCell(new PdfPCell(new Phrase(currency.getId() + "")));
+            my_table.addCell(new PdfPCell(new Phrase(currency.getOrderDate())));
+            my_table.addCell(new PdfPCell(new Phrase(currency.getValue() + "")));
+            my_table.addCell(new PdfPCell(new Phrase(currency.getBaseCurrency())));
+        }
+
+        //Finally add the table to PDF document
+        iText_xls_2_pdf.add(my_table);
+        iText_xls_2_pdf.close();
+        //we created our pdf file..
     }
 }

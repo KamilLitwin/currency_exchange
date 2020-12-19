@@ -1,5 +1,6 @@
 package pl.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import pl.model.Currency;
@@ -11,6 +12,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Dao {
     private Session session;
@@ -125,5 +128,23 @@ public class Dao {
             System.err.println("Błąd zapisu encji Currency");
             e.printStackTrace();
         }
+    }
+
+    public static List<Currency> getAll() {
+        List<Currency> result = new ArrayList<>();
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Currency> query = criteriaBuilder.createQuery(Currency.class);
+            Root<Currency> table = query.from(Currency.class);
+            query.select(table);
+            List<Currency> list = session.createQuery(query).list();
+            result.addAll(list);
+        } catch (HibernateException he) {
+            System.err.println("getAll error");
+            he.printStackTrace();
+        }
+
+        return result;
     }
 }

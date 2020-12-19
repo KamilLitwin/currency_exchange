@@ -3,6 +3,7 @@ package pl.file;
 import pl.api.CurrentService;
 
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
 public class Main {
@@ -26,6 +27,12 @@ public class Main {
                 add("2020-12-19");
                 add("4.2323");
                 add("NULL");
+            }
+        };
+
+        ArrayList<Currency> m2 = new ArrayList<Currency>(){
+            {
+
             }
         };
 
