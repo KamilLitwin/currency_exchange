@@ -1,19 +1,21 @@
 package pl.javaFx;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.api.CurrentService;
 import pl.exception.CustomException;
-
-
+import pl.javaFx.buttons.Change;
+import pl.javaFx.comboBoxes.ChangeListenerBase;
+import pl.javaFx.comboBoxes.ChangeListenerEx;
+import pl.javaFx.comboBoxes.ComboBoxList;
+import pl.javaFx.textAreas.ResultTA;
 
 public class Menu extends Application {
 
@@ -23,6 +25,8 @@ public class Menu extends Application {
 
     private String baseCurrency;
     private String exchangeCurrency;
+    CurrentService currentService = new CurrentService();
+    String[] options = {"PLN", "EUR", "USD"};
 
     public void setBaseCurrency(String baseCurrency) {
         this.baseCurrency = baseCurrency;
@@ -36,75 +40,121 @@ public class Menu extends Application {
     public void start(Stage primaryStage) {
 
         Button oneToOne = new Button("Sprawdź kurs wymiany waluty na inną");
-        oneToOne.shapeProperty();
         oneToOne.setLayoutX(50);
         oneToOne.setLayoutY(50);
-        oneToOne.wrapTextProperty();
-        oneToOne.setOnAction(new EventHandler<ActionEvent>() {
+        oneToOne.setOnAction(actionEvent -> {
+
+            ComboBox<String> baseCB = new ComboBoxList(100, 250, 100, options,"Waluta bazowa");
+            baseCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListenerBase(Menu.this));// odwołujemy się do obiektu nadrzędnego,
+            // przekazujemy instancje menu w którym jesteśmy
+
+            ComboBox<String> exchangeCB = new ComboBoxList(200, 250, 100, options,"Waluta wymiany");
+            exchangeCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListenerEx(Menu.this));
+
+            TextArea result = new ResultTA(450, 250, 10, 300);
+
+            Button change = new Change(300, 250);
+            change.setOnAction(actionEventoTo -> {
+                try {
+                    result.setText(currentService.currencyExchangeCountries(baseCurrency, exchangeCurrency));
+                } catch (CustomException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            Group root = new Group();
+            root.getChildren().add(exchangeCB);
+            root.getChildren().add(result);
+            root.getChildren().add(change);
+            root.getChildren().add(baseCB);
+            Scene scene2 = new Scene(root, 800, 600, Color.DARKGREEN);
+            Stage oneToOneStage = new Stage();
+            oneToOneStage.setScene(scene2);
+            oneToOneStage.setTitle("Currency Exchange");
+            oneToOneStage.show();
+            primaryStage.close();
+        });
+
+        Button euroToMany = new Button("Wyświetl kursy walut dla euro");
+        euroToMany.setLayoutX(50);
+        euroToMany.setLayoutY(100);
+        euroToMany.setOnAction(actionEvent -> {
+            Label label = new Label("Euro");
+            label.setFont(new Font("Arial", 100));
+            label.setLayoutX(250);
+            label.setLayoutY(100);
+            TextArea currenciesValue = new ResultTA(200, 200, 600, 400);
+            currenciesValue.setWrapText(true);
+            try {
+                currenciesValue.setText(currentService.returnCurrencies());
+            } catch (CustomException e) {
+                e.printStackTrace();
+            }
+
+            Group root = new Group();
+            root.getChildren().add(currenciesValue);
+            root.getChildren().add(label);
+            Scene scene2 = new Scene(root, 800, 600, Color.DARKGREEN);
+            Stage euroToManyStage = new Stage();
+            euroToManyStage.setScene(scene2);
+            euroToManyStage.setTitle("Kurs Euro");
+            euroToManyStage.show();
+            primaryStage.close();
+        });
+
+        Button oneToAll = new Button("Wyświetl wszystkie waluty dla wybranej");
+        oneToAll.setLayoutX(50);
+        oneToAll.setLayoutY(150);
+        oneToAll.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                CurrentService currentService = new CurrentService();
+                ComboBox<String> base = new ComboBoxList(550, 150, 150, options, "Bazowa waluta");
+                base.getSelectionModel().selectedItemProperty().addListener(new ChangeListenerBase(Menu.this));
 
-                String [] options = {"PLN","EUR","USD"};
-                ComboBox<String> baseCB = new ComboBox<String>();
-                baseCB.getItems().addAll(options);
-                baseCB.setLayoutX(100);
-                baseCB.setLayoutY(250);
-                baseCB.setMaxWidth(100);
-                baseCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListenerBase(Menu.this));// odwołujemy się do obiektu nadrzędnego,
-                // przekazujemy instancje menu w którym jesteśmy
+                TextArea currenciesValue = new ResultTA(100, 200, 800, 800);
+                currenciesValue.setWrapText(true);
+                currenciesValue.setPrefWidth(600);
 
-                ComboBox<String> exchangeCB = new ComboBox<String>();
-                exchangeCB.getItems().addAll(options);
-                exchangeCB.setLayoutX(200);
-                exchangeCB.setLayoutY(250);
-                exchangeCB.setMaxWidth(100);
-                exchangeCB.getSelectionModel().selectedItemProperty().addListener(
-                        new ChangeListener<String>(){
-                            public void changed(ObservableValue<? extends String> ov,
-                                                String old_val, String new_val) {
-                                exchangeCurrency = new_val;
-                            }
-                        });
+                TextField dateFrom = new TextField();
+                dateFrom.setPromptText("Pokaż od yyyy-MM-dd");
+                dateFrom.setLayoutX(150);
+                dateFrom.setLayoutY(150);
 
-                TextArea result = new TextArea();
-                result.setLayoutX(450);
-                result.setLayoutY(250);
-                result.setMaxHeight(10);
-                result.setMaxWidth(300);
-                result.isWrapText();
+                TextField dateTo = new TextField();
+                dateTo.setPromptText("Pokaż do yyyy-MM-dd");
+                dateTo.setLayoutX(350);
+                dateTo.setLayoutY(150);
 
-                Button change = new Button("Wymień");
-                change.setLayoutX(300);
-                change.setLayoutY(250);
+
+                Button change = new Change(400, 50);
                 change.setOnAction(actionEventoTo -> {
                     try {
-                        String result2 = currentService.currencyExchangeCountries(baseCurrency, exchangeCurrency);
-                        result.setText(result2);
+                        currenciesValue.setText(currentService.ratesHistorical(baseCurrency
+                                ,dateFrom.getText()
+                                ,dateTo.getText()));
                     } catch (CustomException e) {
                         e.printStackTrace();
                     }
                 });
-
                 Group root = new Group();
-                root.getChildren().add(exchangeCB);
-                root.getChildren().add(result);
+                root.getChildren().add(currenciesValue);
+                root.getChildren().add(dateFrom);
+                root.getChildren().add(dateTo);
                 root.getChildren().add(change);
-                root.getChildren().add(baseCB);
-                Scene scene2 = new Scene(root,800,600, Color.DARKGREEN);
-                Stage oneToOneStage = new Stage();
-                oneToOneStage.setScene(scene2);
-                oneToOneStage.setTitle("Currency Exchange");
-                oneToOneStage.show();
+                root.getChildren().add(base);
+                Scene scene2 = new Scene(root, 800, 600, Color.DARKGREEN);
+                Stage oneToAllStage = new Stage();
+                oneToAllStage.setScene(scene2);
+                oneToAllStage.setTitle("Kursy wybranej waluty");
+                oneToAllStage.show();
                 primaryStage.close();
             }
         });
-
-
         Group root = new Group();
         root.getChildren().add(oneToOne);
-
-        Scene scene = new Scene(root,800,600, Color.DARKGREEN);
+        root.getChildren().add(euroToMany);
+        root.getChildren().add(oneToAll);
+        Scene scene = new Scene(root, 800, 600, Color.DARKGREEN);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Currency Exchange");
         primaryStage.show();
