@@ -150,7 +150,7 @@ public class CurrentService {
         try {
             PrintWriter writer = new PrintWriter("waluty.txt");
             for (Currency currency : currencies) {
-                writer.printf("CUR_ID = %d | CUR_BASE_CURRENCY = %.2f | CUR_DATE = %s | CUR_VALUE = %s | CUR_RATE = %.2f\n",
+                writer.printf("CUR_ID = %d | CUR_BASE_CURRENCY = %s | CUR_DATE = %s | CUR_VALUE = %s\n",
                         currency.getId(),
                         currency.getBaseCurrency(),
                         currency.getOrderDate(),
@@ -173,7 +173,7 @@ public class CurrentService {
             PrintWriter writer = new PrintWriter("waluty.csv");
             writer.println("CUR_ID;CUR_BASE_CURRENCY;CUR_DATE;CUR_VALUE");
             for (Currency currency : currencies) {
-                writer.printf("%d;%.2f;%s;%s;%s;%.2f\n",
+                writer.printf("%d;%s;%s;%s\n",
                         currency.getId(),
                         currency.getBaseCurrency(),
                         currency.getOrderDate(),
@@ -209,14 +209,14 @@ public class CurrentService {
             Row dataRow = sheet.createRow(dataRowIndex++);
 
             int dataColumnIndex = 0;
-            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getId());
-            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getOrderDate());
-            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getValue());
-            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getBaseCurrency());
+            dataRow.createCell(0).setCellValue(currency.getId() + "");
+            dataRow.createCell(1).setCellValue(currency.getOrderDate());
+            dataRow.createCell(2).setCellValue(currency.getValue() + "");
+            dataRow.createCell(3).setCellValue(currency.getBaseCurrency());
         }
 
         // zapisujemy excel do pliku
-        FileOutputStream fileOutputStream = null;
+        FileOutputStream fileOutputStream;
         try {
 
             File myFile = new File("waluty.xlsx");
@@ -245,7 +245,7 @@ public class CurrentService {
         //we have two columns in the Excel sheet, so we create a PDF table with two columns
         //Note: There are ways to make this dynamic in nature, if you want to.
 
-        String[] columns = "id;amount;base;date;rateName;rateValue".split(";");
+        String[] columns = "CUR_ID;CUR_BASE_CURRENCY;CUR_DATE;CUR_VALUE".split(";");
 
         PdfPTable my_table = new PdfPTable(columns.length);
         for (String str : columns) {
