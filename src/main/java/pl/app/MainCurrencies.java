@@ -60,7 +60,7 @@ public class MainCurrencies {
                     result = currentService.ratesHistorical(currency1,dateFrom,dateTo);
                     break;
                 case 5:
-                    currentService.exportCurrencyToTextFile();
+
                     currentService.exportCurrencyToCsvFile();
                     String excelPath = currentService.exportCurrencyToExcelFile();
 

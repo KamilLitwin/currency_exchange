@@ -127,7 +127,8 @@ public class CurrentService {
             }
             in.close();
 
-            if (stringBuilder.toString() == "") {
+            if (stringBuilder.toString().
+                    equals("")) {
                 throw new CustomException("Jakiś inny komunikat obłędzie");
             }
 
@@ -143,28 +144,6 @@ public class CurrentService {
         return null;
     }
 
-    public void exportCurrencyToTextFile() {
-
-        List<Currency> currencies = Dao.getAll();
-
-        try {
-            PrintWriter writer = new PrintWriter("waluty.txt");
-            for (Currency currency : currencies) {
-                writer.printf("CUR_ID = %d | CUR_BASE_CURRENCY = %s | CUR_DATE = %s | CUR_VALUE = %s\n",
-                        currency.getId(),
-                        currency.getBaseCurrency(),
-                        currency.getOrderDate(),
-                        currency.getValue());
-                        //currency.getRates());
-            }
-
-            writer.close();
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void exportCurrencyToCsvFile() {
 
         List<Currency> currencies = Dao.getAll();
@@ -173,7 +152,7 @@ public class CurrentService {
             PrintWriter writer = new PrintWriter("waluty.csv");
             writer.println("CUR_ID;CUR_BASE_CURRENCY;CUR_DATE;CUR_VALUE");
             for (Currency currency : currencies) {
-                writer.printf("%d;%s;%s;%s\n",
+                writer.printf("%d;%.2f;%s;%s;%s;%.2f\n",
                         currency.getId(),
                         currency.getBaseCurrency(),
                         currency.getOrderDate(),
@@ -209,14 +188,14 @@ public class CurrentService {
             Row dataRow = sheet.createRow(dataRowIndex++);
 
             int dataColumnIndex = 0;
-            dataRow.createCell(0).setCellValue(currency.getId() + "");
-            dataRow.createCell(1).setCellValue(currency.getOrderDate());
-            dataRow.createCell(2).setCellValue(currency.getValue() + "");
-            dataRow.createCell(3).setCellValue(currency.getBaseCurrency());
+            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getId());
+            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getOrderDate());
+            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getValue());
+            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getBaseCurrency());
         }
 
         // zapisujemy excel do pliku
-        FileOutputStream fileOutputStream;
+        FileOutputStream fileOutputStream = null;
         try {
 
             File myFile = new File("waluty.xlsx");
@@ -245,7 +224,7 @@ public class CurrentService {
         //we have two columns in the Excel sheet, so we create a PDF table with two columns
         //Note: There are ways to make this dynamic in nature, if you want to.
 
-        String[] columns = "CUR_ID;CUR_BASE_CURRENCY;CUR_DATE;CUR_VALUE".split(";");
+        String[] columns = "id;amount;base;date;rateName;rateValue".split(";");
 
         PdfPTable my_table = new PdfPTable(columns.length);
         for (String str : columns) {
