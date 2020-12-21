@@ -12,6 +12,7 @@ import pl.api.CurrentService;
 import pl.exception.CustomException;
 import pl.javaFx.buttons.Back;
 import pl.javaFx.buttons.Change;
+import pl.javaFx.buttons.Print;
 import pl.javaFx.comboBoxes.ChangeListenerBase;
 import pl.javaFx.comboBoxes.ChangeListenerEx;
 import pl.javaFx.comboBoxes.ComboBoxList;
@@ -186,10 +187,15 @@ public class Menu extends Application {
             }
         });
 
+        Button print = new Print();
+        print.setLayoutY(350);
+        print.setLayoutX(400);
+
         Group root = new Group();
         root.getChildren().add(oneToOne);
         root.getChildren().add(euroToMany);
         root.getChildren().add(oneToAll);
+        root.getChildren().add(print);
         Scene scene = new Scene(root, 800, 600, Color.DARKGREEN);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Currency Exchange");
