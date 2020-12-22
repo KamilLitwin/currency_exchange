@@ -1,0 +1,27 @@
+[33maae9422[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Added print button
+[33m34aadc4[m Added back button and corrected appearance
+[33md737f1d[m added fx
+[33m4f35adf[m improvement file continuation
+[33ma1cc499[m Added upgrade javaFX
+[33m066303c[m improvement file
+[33med0bd49[m improvement file
+[33m6196a12[m save file csv, xlsx, pdf
+[33m15c9dde[m Added fixed history query
+[33m78b8b6d[m Added javaFX
+[33m06ea362[m added created file CSV
+[33med5ac5a[m added new options main
+[33m34048b0[m inserting data into databases
+[33m0c7468b[m added switch number 11
+[33mafbe354[m Added fixed DTO
+[33me0af688[m Added DTO
+[33m5237ffa[m changes model
+[33ma1ea1df[m Added recourses and test
+[33m429e41a[m currency exchange API added
+[33mb8a58ba[m added Hibernate and model Dao
+[33m488fa7b[m Update .gitignore
+[33mbae6990[m Merge remote-tracking branch 'origin/master' into master
+[33m12fb1f3[m added hibernate.cdf.xml
+[33m1ba8e29[m Added recourses and test
+[33ma2da5cb[m test
+[33m37bcfb3[m Added .gitignore
+[33md3b6024[m first commit

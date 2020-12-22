@@ -1,5 +1,6 @@
 package pl.model;
 
+import com.google.gson.internal.LinkedTreeMap;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,7 +22,9 @@ public class Currency {
     @Column(name = "CUR_CURRENCY")
     private String currency;
     @Column(name = "CUR_VALUE")
-    private Double value;
+    private double value;
+    //@Column(name = "CUR_VALUE2")
+    private LinkedTreeMap<String, Double> value2;
     /*@Column(name = "CUR_RATE")
     private LinkedTreeMap<String, Double> rates;*/
 
@@ -65,12 +68,19 @@ public class Currency {
         this.currency = currency;
     }
 
-    public Double getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
+    public LinkedTreeMap<String, Double> getValue2() {
+        return value2;
+    }
+
+   public void setValue2(LinkedTreeMap<String, Double> value2){
+            this.value2 = value2;
+        }
 }
