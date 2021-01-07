@@ -5,6 +5,7 @@ import pl.gson.CurrencyDto;
 import pl.gson.CurrencyHistoryDto;
 import pl.model.Currency;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class CurrencyMapper {
     public static List<Currency> mapCurrencyDtoToEntity2(CurrencyHistoryDto currencyHistoryDto) {
         List<Currency> result = new ArrayList<>();
         for (String key : currencyHistoryDto.getRates().keySet()) {
-            LinkedTreeMap<String, Double> historyRates = currencyHistoryDto.getRates().get(key);
+            LinkedTreeMap<String, BigDecimal> historyRates = currencyHistoryDto.getRates().get(key);
             for (String currencyKey : historyRates.keySet()) {
                 Currency currency = new Currency();
                 currency.setOrderDate(key);
@@ -64,7 +65,7 @@ public class CurrencyMapper {
         result.setDate(currency.getOrderDate());
         result.setCurrency(currency.getCurrency());
 
-        LinkedTreeMap<String, Double> rates = new LinkedTreeMap();
+        LinkedTreeMap<String, BigDecimal> rates = new LinkedTreeMap();
         rates.put(currency.getCurrency(), currency.getValue());
 
         result.setRates(rates);
@@ -81,7 +82,7 @@ public class CurrencyMapper {
         result.setValue(currency.getValue());
 
 
-        LinkedTreeMap<String, LinkedTreeMap<String, Double>> rates = new LinkedTreeMap();
+        LinkedTreeMap<String, LinkedTreeMap<String, BigDecimal>> rates = new LinkedTreeMap();
         rates.put(currency.getOrderDate(), rates.put(currency.getBaseCurrency(), currency.getValue2()));
         //rates.put(currency.getCurrency(), currency.getValue());
 

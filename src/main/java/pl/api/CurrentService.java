@@ -7,10 +7,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import pl.dao.Dao;
 import pl.exception.CustomException;
@@ -190,7 +187,7 @@ public class CurrentService {
             int dataColumnIndex = 0;
             dataRow.createCell(dataColumnIndex++).setCellValue(currency.getId());
             dataRow.createCell(dataColumnIndex++).setCellValue(currency.getOrderDate());
-            dataRow.createCell(dataColumnIndex++).setCellValue(currency.getValue());
+            dataRow.createCell(dataColumnIndex++).setCellValue((RichTextString) currency.getValue());
             dataRow.createCell(dataColumnIndex++).setCellValue(currency.getBaseCurrency());
         }
 

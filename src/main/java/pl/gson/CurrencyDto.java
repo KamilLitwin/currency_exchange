@@ -2,18 +2,20 @@ package pl.gson;
 
 import com.google.gson.internal.LinkedTreeMap;
 
+import java.math.BigDecimal;
+
 public class CurrencyDto {
     private String base;
-    private Double value;
+    private BigDecimal value;
     private String currency;
     private String date;
-    private LinkedTreeMap<String, Double> rates;
+    private LinkedTreeMap<String, BigDecimal> rates;
 
-    public LinkedTreeMap<String, Double> getRates() {
+    public LinkedTreeMap<String, BigDecimal> getRates() {
         return rates;
     }
 
-    public void setRates(LinkedTreeMap<String, Double> rates) {
+    public void setRates(LinkedTreeMap<String, BigDecimal> rates) {
         this.rates = rates;
     }
 
@@ -41,11 +43,11 @@ public class CurrencyDto {
         this.base = base;
     }
 
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
