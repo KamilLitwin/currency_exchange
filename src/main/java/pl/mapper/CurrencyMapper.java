@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CurrencyMapper {
 
-    public static Currency currencyDtoToCurrency(CurrencyDto CDto){
+    public static Currency currencyDtoToCurrency(CurrencyDto CDto) {
         Currency currency = new Currency();
 
         currency.setOrderDate(CDto.getDate());
@@ -22,7 +22,7 @@ public class CurrencyMapper {
     }
 
 
-    public static List<Currency> mapCurrencyDtoToEntity(CurrencyDto currencyDto){
+    public static List<Currency> mapCurrencyDtoToEntity(CurrencyDto currencyDto) {
 
         List<Currency> result = new ArrayList<>();
         for (String key : currencyDto.getRates().keySet()) {
@@ -39,21 +39,21 @@ public class CurrencyMapper {
         return result;
     }
 
-    public static List<Currency> mapCurrencyDtoToEntity2(CurrencyHistoryDto currencyHistoryDto){
-
-       List<Currency> result = new ArrayList<>();
+    public static List<Currency> mapCurrencyDtoToEntity2(CurrencyHistoryDto currencyHistoryDto) {
+        List<Currency> result = new ArrayList<>();
         for (String key : currencyHistoryDto.getRates().keySet()) {
-            Currency currency = new Currency();
-            currency.setOrderDate(key);
-            currency.setBaseCurrency(currencyHistoryDto.getBase());
-            //currency.setValue();
-            //currency.setValue2(currencyHistoryDto.getRates().get(key));
-            //currency.setCurrency(key);
-            //currency.setRates(currencyDto.getRates());
-
-            result.add(currency);
+            LinkedTreeMap<String, Double> historyRates = currencyHistoryDto.getRates().get(key);
+            for (String currencyKey : historyRates.keySet()) {
+                Currency currency = new Currency();
+                currency.setOrderDate(key);
+                currency.setBaseCurrency(currencyHistoryDto.getBase());
+                currency.setValue(historyRates.get(currencyKey));
+                currency.setCurrency(currencyKey);
+                currency.setOrderDate(key);
+                // currency.setRates(currencyDto.getRates());
+                result.add(currency);
+            }
         }
-
         return result;
     }
 
@@ -81,10 +81,9 @@ public class CurrencyMapper {
         result.setValue(currency.getValue());
 
 
-
         LinkedTreeMap<String, LinkedTreeMap<String, Double>> rates = new LinkedTreeMap();
-        rates.put(currency.getOrderDate(),rates.put(currency.getBaseCurrency(),currency.getValue2()));
-        //rates.put(currency.getCurrency(), currency.getValue2());
+        rates.put(currency.getOrderDate(), rates.put(currency.getBaseCurrency(), currency.getValue2()));
+        //rates.put(currency.getCurrency(), currency.getValue());
 
         result.setRates(rates);
 
