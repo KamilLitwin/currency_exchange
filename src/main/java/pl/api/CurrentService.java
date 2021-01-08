@@ -129,7 +129,7 @@ public class CurrentService {
 
             if (stringBuilder.toString().
                     equals("")) {
-                throw new CustomException("Jakiś inny komunikat obłędzie");
+                throw new CustomException("Jakiś inny komunikat o błędzie");
             }
 
             return stringBuilder.toString();

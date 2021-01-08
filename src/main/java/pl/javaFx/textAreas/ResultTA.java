@@ -11,4 +11,12 @@ public class ResultTA extends TextArea {
         setMaxWidth(maxWidth);
         isWrapText();
     }
+
+    public ResultTA(double layoutX, double layoutY,double maxHeight) {
+        setLayoutX(layoutX);
+        setLayoutY(layoutY);
+        setMaxHeight(maxHeight);
+        isWrapText();
+    }
+
 }

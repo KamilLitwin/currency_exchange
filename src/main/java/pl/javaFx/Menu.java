@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.api.CurrentService;
 import pl.exception.CustomException;
+import pl.gson.CurrencyDto;
 import pl.javaFx.buttons.Back;
 import pl.javaFx.buttons.Change;
 import pl.javaFx.buttons.Print;
@@ -23,7 +24,7 @@ public class Menu extends Application {
     private String baseCurrency;
     private String exchangeCurrency;
     CurrentService currentService = new CurrentService();
-    String[] options = {"PLN", "EUR", "USD"};
+    String[] options = {"PLN", "EUR", "USD", "GBP"};
 
     public void setBaseCurrency(String baseCurrency) {
         this.baseCurrency = baseCurrency;
@@ -53,12 +54,13 @@ public class Menu extends Application {
             ComboBox<String> exchangeCB = new ComboBoxList(200, 250, 150, options,"Waluta wymiany");
             exchangeCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListenerEx(Menu.this));
 
-            TextArea result = new ResultTA(450, 250, 60, 300);
+            TextArea result = new ResultTA(450, 250, 15, 150);
 
             Button change = new Change(350, 250);
             change.setOnAction(actionEventoTo -> {
                 try {
-                    result.setText(currentService.currencyExchangeCountries(baseCurrency, exchangeCurrency));
+                    CurrencyDto currencyDto3 = currentService.parseDto3(baseCurrency,exchangeCurrency);
+                    result.setText(""+ currencyDto3.getRates());
                 } catch (CustomException e) {
                     e.printStackTrace();
                 }
@@ -203,3 +205,5 @@ public class Menu extends Application {
 
     }
 }
+// pobieranie z api informacji i wyświetlenie na konsoli ( w postaci label) - napisać zapytanie w hibernate
+// select CUR_BASE_CURRENCY from currency;
