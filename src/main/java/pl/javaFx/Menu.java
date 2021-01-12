@@ -54,6 +54,23 @@ public class Menu extends Application {
             ComboBox<String> exchangeCB = new ComboBoxList(200, 250, 150, options,"Waluta wymiany");
             exchangeCB.getSelectionModel().selectedItemProperty().addListener(new ChangeListenerEx(Menu.this));
 
+
+            TextField value = new TextField();
+            value.setLayoutX(50);
+            value.setLayoutY(400);
+            value.maxWidth(50);
+            value.maxHeight(60);
+            value.setPromptText("Podaj kwotę");
+
+
+            TextArea resultValue = new ResultTA(450, 400, 60, 300);
+
+            Button changeValue = new Change(300, 400);
+            changeValue.setOnAction(actionEventoTo -> {
+                resultValue.setText("zrób logike");
+
+            });
+
             TextArea result = new ResultTA(450, 250, 15, 150);
 
             Button change = new Change(350, 250);
@@ -71,6 +88,9 @@ public class Menu extends Application {
             root.getChildren().add(result);
             root.getChildren().add(change);
             root.getChildren().add(baseCB);
+            root.getChildren().add(value);
+            root.getChildren().add(resultValue);
+            root.getChildren().add(changeValue);
             Scene scene2 = new Scene(root, 800, 600, Color.DARKGREEN);
             Stage oneToOneStage = new Stage();
             oneToOneStage.setScene(scene2);
