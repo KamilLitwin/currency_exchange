@@ -56,28 +56,19 @@ public class Menu extends Application {
 
 
             TextField value = new TextField();
-            value.setLayoutX(50);
-            value.setLayoutY(400);
+            value.setLayoutX(350);
+            value.setLayoutY(250);
             value.maxWidth(50);
             value.maxHeight(60);
             value.setPromptText("Podaj kwotę");
 
+            TextArea result = new ResultTA(620, 250, 15, 150);
 
-            TextArea resultValue = new ResultTA(450, 400, 60, 300);
-
-            Button changeValue = new Change(300, 400);
-            changeValue.setOnAction(actionEventoTo -> {
-                resultValue.setText("zrób logike");
-
-            });
-
-            TextArea result = new ResultTA(450, 250, 15, 150);
-
-            Button change = new Change(350, 250);
+            Button change = new Change(525, 250);
             change.setOnAction(actionEventoTo -> {
                 try {
                     CurrencyDto currencyDto3 = currentService.parseDto3(baseCurrency,exchangeCurrency);
-                    result.setText(""+ currencyDto3.getRates());
+                    result.setText("odczytaj warotść z bazy danych");
                 } catch (CustomException e) {
                     e.printStackTrace();
                 }
@@ -89,8 +80,6 @@ public class Menu extends Application {
             root.getChildren().add(change);
             root.getChildren().add(baseCB);
             root.getChildren().add(value);
-            root.getChildren().add(resultValue);
-            root.getChildren().add(changeValue);
             Scene scene2 = new Scene(root, 800, 600, Color.DARKGREEN);
             Stage oneToOneStage = new Stage();
             oneToOneStage.setScene(scene2);
