@@ -3,6 +3,7 @@ package pl.dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.NativeQuery;
 import pl.model.Currency;
 import pl.model.util.HibernateUtil;
 
@@ -146,5 +147,12 @@ public class Dao {
         }
 
         return result;
+    }
+
+    public void queryValue(){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        NativeQuery<Currency> nativeQuery = session
+                .createNativeQuery("select CUR_ID, CUR_BASE_CURRENCY, CUR_CURRENCY, CUR_DATE, CUR_VALUE from currency ORDER BY CUR_ID desc limit 1",Currency.class);
+        nativeQuery.getResultList().forEach(System.out::println);
     }
 }
