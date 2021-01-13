@@ -19,6 +19,7 @@ import pl.javaFx.comboBoxes.ChangeListenerBase;
 import pl.javaFx.comboBoxes.ChangeListenerEx;
 import pl.javaFx.comboBoxes.ComboBoxList;
 import pl.javaFx.textAreas.ResultTA;
+import pl.spliter.StringSpliter;
 
 public class Menu extends Application {
 
@@ -113,17 +114,24 @@ public class Menu extends Application {
             Label label = new Label("Euro");
             label.setFont(new Font("Arial", 100));
             label.setLayoutX(250);
-            label.setLayoutY(100);
-            TextArea currenciesValue = new ResultTA(200, 200, 600, 400);
-            currenciesValue.setWrapText(true);
+            label.setLayoutY(50);
+            ListView currenciesListValue = new ListView();
+            currenciesListValue.setLayoutX(250);
+            currenciesListValue.setLayoutY(150);
+            currenciesListValue.maxHeight(100);
+            currenciesListValue.maxWidth(200);
             try {
-                currenciesValue.setText(currentService.returnCurrencies());
+                currenciesListValue.getItems()
+                        .addAll(StringSpliter
+                                .split(currentService
+                                        .returnCurrencies()));
+
             } catch (CustomException e) {
                 e.printStackTrace();
             }
 
             Group root = new Group();
-            root.getChildren().add(currenciesValue);
+            root.getChildren().add(currenciesListValue);
             root.getChildren().add(label);
             Scene scene2 = new Scene(root, 800, 600, Color.DARKGREEN);
             Stage euroToManyStage = new Stage();
