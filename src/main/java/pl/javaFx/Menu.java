@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import pl.api.CurrentService;
+import pl.calculator.Calculator;
 import pl.exception.CustomException;
 import pl.gson.CurrencyDto;
 import pl.javaFx.buttons.Back;
@@ -68,7 +69,12 @@ public class Menu extends Application {
             change.setOnAction(actionEventoTo -> {
                 try {
                     CurrencyDto currencyDto3 = currentService.parseDto3(baseCurrency,exchangeCurrency);
-                    result.setText("odczytaj warotść z bazy danych");
+                    double kwota;
+                    if(!value.getText().isEmpty()){
+                    kwota = Double.parseDouble(value.getText());}
+                    else {kwota = 1;}
+                    Double wynik = Calculator.calculateValue(kwota);
+                    result.setText(""+ wynik);
                 } catch (CustomException e) {
                     e.printStackTrace();
                 }
