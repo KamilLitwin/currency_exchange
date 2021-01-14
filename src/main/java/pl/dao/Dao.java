@@ -149,11 +149,14 @@ public class Dao {
         return result;
     }
 
-    public static Currency queryValue(){
+    public static Double queryValue(){
+        List <Currency> results = new ArrayList();
         Session session = HibernateUtil.getSessionFactory().openSession();
-        NativeQuery<Currency> Query = session
-                .createNativeQuery("select CUR_VALUE from currency ORDER BY CUR_ID desc limit 1",Currency.class);
-        return Query.getSingleResult();
-
+        NativeQuery<Currency> query = session
+                .createNativeQuery("select CUR_VALUE from currency limit 1");
+        results = query.list();
+        String firstResult = "" + results.get(0);
+        Double dResult = Double.parseDouble(firstResult);
+        return dResult;
     }
 }
