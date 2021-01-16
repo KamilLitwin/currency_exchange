@@ -153,7 +153,7 @@ public class Dao {
         List <Currency> results = new ArrayList();
         Session session = HibernateUtil.getSessionFactory().openSession();
         NativeQuery<Currency> query = session
-                .createNativeQuery("select CUR_VALUE from currency limit 1");
+                .createNativeQuery("select CUR_VALUE from currency");
         results = query.list();
         String firstResult = "" + results.get(0);
         Double dResult = Double.parseDouble(firstResult);
